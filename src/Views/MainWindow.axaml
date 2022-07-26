@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:a="using:AzureMultiTranslatorAvalonia"
+        xmlns:vm="using:AzureMultiTranslatorAvalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AzureMultiTranslatorAvalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AzureMultiTranslatorAvalonia">
+
+   <Design.DataContext>
+      <vm:MainWindowViewModel/>
+   </Design.DataContext>
+
+   <Border Padding="10">
+      <Grid RowDefinitions="Auto,*">
+         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+            <Label Content="{x:Static a:Resources.Endpoint}" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+            <TextBox Text="{Binding Endpoint}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="5,0,0,0"/>
+            <Label Content="{x:Static a:Resources.SubscriptionKey}" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding SubscriptionKey}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,10,0,0"/>
+            <CheckBox IsChecked="{Binding RememberSubscriptionKey, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,10,0,0" Grid.Column="3" Grid.Row="1" Padding="0">
+               <Label Content="{x:Static a:Resources.Remember}" Margin="0" VerticalAlignment="Center"/>
+            </CheckBox>
+         </Grid>
+         <Border Grid.Row="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+            <Grid ColumnDefinitions="*,5,3*" RowDefinitions="Auto,*">
+               <Label Content="{x:Static a:Resources.Source}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+               <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="5,0,5,0"></GridSplitter>
+               <Label Content="{x:Static a:Resources.Translations}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+               <Grid Grid.Column="0" Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="0,10,0,0">
+                  <WrapPanel Grid.Row="0" Grid.Column="0">
+                     <StackPanel Orientation="Horizontal" Margin="0,10,15,0" VerticalAlignment="Center">
+                        <Label Content="{x:Static a:Resources.Language}" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding Language, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" MaxLength="5" Margin="5,0,0,0"/>
+                     </StackPanel>
+                     <CheckBox IsChecked="{Binding IsHtml, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,10,15,0" Padding="0">
+                        <Label Content="{x:Static a:Resources.Html}" VerticalAlignment="Center" Margin="0"/>
+                     </CheckBox>
+                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
+                        <Label Content="{x:Static a:Resources.MaxChars}" VerticalAlignment="Center"/>
+                        <NumericUpDown Maximum="100000" Minimum="10" Value="{Binding MaxChars, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                     </StackPanel>
+                  </WrapPanel>
+                  <TextBox Grid.Column="0" Grid.Row="3" Margin="0,10,0,0" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SourceText}"></TextBox>
+                  <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                     <TextBox Text="{Binding Length}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                     <Label Content="{x:Static a:Resources.Characters}" VerticalAlignment="Center" Margin="5,10,0,0"/>
+                  </StackPanel>
+                  <Button Content="{x:Static a:Resources.Translate}" Grid.Column="0" Grid.Row="5" IsEnabled="{Binding CanTranslate}" Command="{Binding TranslateTextCommand}"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" />
+               </Grid>
+               <Grid Grid.Column="2" Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto,*,5,*" Margin="0,10,0,0">
+                  <WrapPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
+                     <CheckBox IsChecked="{Binding ShouldBackTranslate, Mode=TwoWay}" VerticalAlignment="Center" Padding="0" Margin="0,10,15,0">
+                        <Label Content="{x:Static a:Resources.BackTranslate}"></Label>
+                     </CheckBox>
+                     <StackPanel Orientation="Horizontal" Margin="0,10,15,0" VerticalAlignment="Center">
+                        <Button Content="▲" VerticalAlignment="Center" Command="{Binding MoveRowUpCommand}"/>
+                        <Button Content="▼" VerticalAlignment="Center" Command="{Binding MoveRowDownCommand}" Margin="5,0,0,0"/>
+                        <Button Content="{x:Static a:Resources.Sort}" Command="{Binding SortRowsCommand}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                     </StackPanel>
+                     <StackPanel Orientation="Horizontal" Margin="0,10,5,0" VerticalAlignment="Center">
+                        <TextBox Text="{Binding LanguageToAdd}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button Content="{x:Static a:Resources.AddLanguage}" Command="{Binding AddLanguageCommand}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                     </StackPanel>
+                  </WrapPanel>
+                  <DataGrid Grid.Column="0" Grid.Row="1" Items="{Binding Rows, Mode=TwoWay}" HeadersVisibility="Column" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" Margin="0,10,0,0">
+                     <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="" Width="Auto" Binding="{Binding Translate, Mode=TwoWay}"/>
+                        <DataGridTextColumn IsReadOnly="True" Header="" Width="Auto" Binding="{Binding Language}"/>
+                        <DataGridTextColumn Header="{x:Static a:Resources.Translated}" Width="*" Binding="{Binding TranslatedText, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static a:Resources.BackTranslated}" Width="*" Binding="{Binding BackTranslatedText, Mode=TwoWay}"/>
+                        <DataGridTemplateColumn Header="" Width="Auto">
+                           <DataGridTemplateColumn.CellTemplate>
+                              <DataTemplate>
+                                 <Button Content="{x:Static a:Resources.Copy}" Command="{Binding DataContext.CopyTranslatedTextCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding Path=.}"/>
+                              </DataTemplate>
+                           </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="" Width="Auto">
+                           <DataGridTemplateColumn.CellTemplate>
+                              <DataTemplate>
+                                 <Button Content="{x:Static a:Resources.Remove}" Command="{Binding DataContext.RemoveRowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding Path=.}"/>
+                              </DataTemplate>
+                           </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                     </DataGrid.Columns>
+                  </DataGrid>
+                  <GridSplitter Grid.Column="0" Grid.Row="2" Margin="0,5,0,5"/>
+                  <Grid Grid.Column="0" Grid.Row="3" ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,*">
+                     <Label Grid.Column="0" Grid.Row="0" Content="{x:Static a:Resources.Translated}" />
+                     <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
+                     <Label Grid.Column="2" Grid.Row="0" Content="{x:Static a:Resources.BackTranslated}" />
+                     <TextBox Grid.Column="0" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowTranslatedText}" />
+                     <TextBox Grid.Column="2" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowBackTranslatedText}" />
+                  </Grid>
+               </Grid>
+            </Grid>
+         </Border>
+      </Grid>
+   </Border>
+</Window>
