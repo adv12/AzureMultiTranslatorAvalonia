@@ -70,11 +70,18 @@
                         <DataGridCheckBoxColumn Header="" Width="Auto" Binding="{Binding Translate, Mode=TwoWay}"/>
                         <DataGridTextColumn IsReadOnly="True" Header="" Width="Auto" Binding="{Binding Language}"/>
                         <DataGridTextColumn Header="{x:Static a:Resources.Translated}" Width="*" Binding="{Binding TranslatedText, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="{x:Static a:Resources.BackTranslated}" Width="*" Binding="{Binding BackTranslatedText, Mode=TwoWay}"/>
                         <DataGridTemplateColumn Header="" Width="Auto">
                            <DataGridTemplateColumn.CellTemplate>
                               <DataTemplate>
                                  <Button Content="{x:Static a:Resources.Copy}" Command="{Binding DataContext.CopyTranslatedTextCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding Path=.}"/>
+                              </DataTemplate>
+                           </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static a:Resources.BackTranslated}" Width="*" Binding="{Binding BackTranslatedText, Mode=TwoWay}"/>
+                        <DataGridTemplateColumn Header="" Width="Auto">
+                           <DataGridTemplateColumn.CellTemplate>
+                              <DataTemplate>
+                                 <Button Content="{x:Static a:Resources.Copy}" Command="{Binding DataContext.CopyBackTranslatedTextCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding Path=.}"/>
                               </DataTemplate>
                            </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

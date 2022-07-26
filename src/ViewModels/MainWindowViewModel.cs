@@ -188,6 +188,8 @@ namespace AzureMultiTranslatorAvalonia.ViewModels
 
       public ReactiveCommand<TranslatedTextRow, Unit> CopyTranslatedTextCommand { get; }
 
+      public ReactiveCommand<TranslatedTextRow, Unit> CopyBackTranslatedTextCommand { get; }
+
       public ReactiveCommand<TranslatedTextRow, Unit> RemoveRowCommand { get; }
 
       public MainWindowViewModel()
@@ -313,6 +315,7 @@ namespace AzureMultiTranslatorAvalonia.ViewModels
             .ToProperty(this, x => x.SelectedRowBackTranslatedText);
 
          CopyTranslatedTextCommand = ReactiveCommand.Create<TranslatedTextRow>(CopyTranslatedText);
+         CopyBackTranslatedTextCommand = ReactiveCommand.Create<TranslatedTextRow>(CopyBackTranslatedText);
          RemoveRowCommand = ReactiveCommand.Create<TranslatedTextRow>(RemoveLanguage);
       }
 
@@ -376,6 +379,15 @@ namespace AzureMultiTranslatorAvalonia.ViewModels
          if (clipboard != null)
          {
             await clipboard.SetTextAsync(row.TranslatedText);
+         }
+      }
+
+      public async void CopyBackTranslatedText(TranslatedTextRow row)
+      {
+         IClipboard? clipboard = Application.Current?.Clipboard;
+         if (clipboard != null)
+         {
+            await clipboard.SetTextAsync(row.BackTranslatedText);
          }
       }
 
