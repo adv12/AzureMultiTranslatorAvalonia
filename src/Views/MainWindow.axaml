@@ -13,6 +13,12 @@
       <vm:MainWindowViewModel/>
    </Design.DataContext>
 
+   <Window.Styles>
+      <Style Selector=".translation TextBlock">
+         <Setter Property="MaxLines" Value="1" />
+      </Style>
+   </Window.Styles>
+
    <Border Padding="10">
       <Grid RowDefinitions="Auto,*">
          <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
@@ -69,7 +75,7 @@
                      <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="" Width="Auto" Binding="{Binding Translate, Mode=TwoWay}"/>
                         <DataGridTextColumn IsReadOnly="True" Header="" Width="Auto" Binding="{Binding Language}"/>
-                        <DataGridTextColumn Header="{x:Static a:Resources.Translated}" Width="*" Binding="{Binding TranslatedText, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static a:Resources.Translated}" Width="*" Binding="{Binding TranslatedText, Mode=TwoWay}" CellStyleClasses="translation" IsReadOnly="True" />
                         <DataGridTemplateColumn Header="" Width="Auto">
                            <DataGridTemplateColumn.CellTemplate>
                               <DataTemplate>
@@ -77,7 +83,7 @@
                               </DataTemplate>
                            </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="{x:Static a:Resources.BackTranslated}" Width="*" Binding="{Binding BackTranslatedText, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static a:Resources.BackTranslated}" Width="*" Binding="{Binding BackTranslatedText, Mode=TwoWay}" CellStyleClasses="translation" IsReadOnly="True" />
                         <DataGridTemplateColumn Header="" Width="Auto">
                            <DataGridTemplateColumn.CellTemplate>
                               <DataTemplate>
@@ -99,8 +105,8 @@
                      <Label Grid.Column="0" Grid.Row="0" Content="{x:Static a:Resources.Translated}" />
                      <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
                      <Label Grid.Column="2" Grid.Row="0" Content="{x:Static a:Resources.BackTranslated}" />
-                     <TextBox Grid.Column="0" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowTranslatedText}" />
-                     <TextBox Grid.Column="2" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowBackTranslatedText}" />
+                     <TextBox Grid.Column="0" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowTranslatedText}" IsReadOnly="True" />
+                     <TextBox Grid.Column="2" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRowBackTranslatedText}" IsReadOnly="True" />
                   </Grid>
                </Grid>
             </Grid>
